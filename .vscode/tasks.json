@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C sdcc.exe build active file",
+			"command": "sdcc",
+			"args": [
+				"--verbose",
+				"--model-small",
+				"-o./bin/",
+				"${file}"
+			],
+			"options": {},
+			"problemMatcher": [],
+			"group": "build",
+			"detail": "compiler: sdcc"
+		},
+		{
+			"type": "shell",
+			"label": "CMake: install",
+			"command": "./install.bat",
+			"problemMatcher": [],
+			"detail": "CMake template install task"
+		}
+	]
+}
+
+//sdcc --verbose --model-small -o"./bin/" "./src/heartleds.c"
+//packihx "./bin/heartleds.ihx" > "./bin/heartleds.hex"

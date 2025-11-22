@@ -249,6 +249,6 @@ void main(void) {
 		bottomup(100);
 		bottomup(100);
 		all_off(500);
-		all_on(5000);
+		all_on(3000);
     }
 }
