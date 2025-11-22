@@ -7,7 +7,7 @@ void Timer0_ISR(void) __interrupt(1) {
 void delay_10ms(void) {
   TMOD &= 0xF0; // clear lower bits for timer
   TMOD |= 0x01 ; // set timer0 in mode 1
-  TH0 = 0xD8; //initial value for 50 ms 
+  TH0 = 0xD8; //initial value for 10 ms 
   TL0 = 0xF0;
   ET0 = 1 ; // enable timer0 interrupt
   EA = 1 ; // enable interrupts
@@ -98,6 +98,36 @@ void lap_cw(delay){
 	}
 }
 
+/* counter clockwise lap */
+void lap_ccw(delay){
+	int port, bit;
+	int state = 0xFF;
+    P0 = state;
+    P1 = state;
+    P2 = state;
+    P3 = state;
+	for(port = 3; port >= 0; port--) {
+		for(bit = 7; bit >= 0; bit--) {
+            switch(port) {
+                case 0: P2 = ~(0x80 >> bit); break;
+                case 1: P3 =  ~(0x80 >> bit); break;
+                case 2: P1 =  ~(0x80 >> bit); break;
+                case 3: P0 =  ~(0x01 << bit); break;
+            }
+	        delay_ms(delay);
+		}
+
+		// reset the port to the default state
+		switch(port) {
+               case 0: P2 = state; break;
+               case 1: P3 = state; break;
+               case 2: P1 = state; break;
+               case 3: P0 = state; break;
+           }
+	}
+}
+
+
 /* fill up from bottom */
 void fill(delay) {
 	int step = 0;
@@ -144,6 +174,7 @@ void fill(delay) {
 	}
 }
 
+/* light them all up starting at the bottom */
 void bottomup(delay) {
 	int step = 0;
 	int bit = 0;
@@ -168,7 +199,33 @@ void bottomup(delay) {
 	}
 
 	delay_ms(delay);
-	delay_ms(delay);
+}
+
+/* extinguish starting from the top */
+void bottomdown(delay) {
+	int step = 0;
+	int bit = 0;
+	int ps[4] = { 0x00, 0x00, 0x00, 0x00 }; // clockwise
+    P0 = ps[3];
+    P1 = ps[2];
+    P2 = ps[0];
+    P3 = ps[1];
+
+	for (step = 0; step < 8; step ++) {
+		ps[0] |= (0x80 >> step);
+		ps[3] |= (0x80 >> step);
+	    P0 = ps[3]; P2 = ps[0];
+		delay_ms(delay);
+	}
+
+	for (step = 0; step < 8; step++) {
+		ps[1] |= (0x80 >> step);
+		ps[2] |= (0x01 << step);
+	    P1 = ps[2];
+	    P3 = ps[1];
+		delay_ms(delay);
+	}
+
 	delay_ms(delay);
 }
 
@@ -241,13 +298,25 @@ void main(void) {
 		cylon(20);
 		cylon(20);
 
-		lap_cw(50);
-		lap_cw(50);
-		lap_cw(50);
+		lap_cw(20);
+		lap_cw(20);
+		lap_ccw(20);
+		lap_ccw(20);
+		lap_cw(20);
+		lap_cw(20);
+		lap_ccw(20);
+		lap_ccw(20);
+		lap_cw(20);
+		lap_cw(20);
+		lap_ccw(20);
+		lap_ccw(20);
 //		fill(50);
 		bottomup(100);
+		bottomdown(100);
 		bottomup(100);
+		bottomdown(100);
 		bottomup(100);
+		bottomdown(100);
 		all_off(500);
 		all_on(3000);
     }

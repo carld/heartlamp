@@ -20,10 +20,10 @@ Steps
     - RST   (reset) is pin 9. Held high to enter ISP mode.
     - VCC   (voltage at the common collector) is pin 40. Solder this to the +5v output of the battery booster module.
     - GND   (ground) is pin 20. Solder this to the ground of the battery booster module.
-5. Update the firmware on a USBasp, by using AVRDUDESS or avrdude and the firmware in tools/USBasp
-5. Connect the updated USBasp programmer to the IDC connector using the ribbon cable that came with the programmer, and a PC USB port
-6. Build src/heartleds.c
+6. Update the firmware on a USBasp, by using AVRDUDESS or avrdude and the firmware in tools/USBasp
+7. Connect the updated USBasp programmer to the IDC connector using the ribbon cable that came with the programmer, and a PC USB port
+8. Build src/heartleds.c
     - see the build.bat file
-6. Run AVRDUDESS or use avedude on the commandline to update the AT89S51 with the built code in bin/heartleds.hex
+9. Run AVRDUDESS or use avedude on the commandline to update the AT89S51 with the built code in bin/heartleds.hex
     - see the install.bat file
 
