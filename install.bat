@@ -1,1 +1,1 @@
- avrdude.exe -C ".\tools\avrdude\avrdude.conf" -c usbasp-clone -p 89S51 -P usb -U flash:w:".\bin\heartleds.hex":a 
+ "C:\Users\owner\Repos\8051\avrdude-v8.1-windows-x64\avrdude" -C ".\tools\avrdude\avrdude.conf" -c usbasp-clone -p 89S51 -P usb -U flash:w:".\bin\heartleds.hex":a 
