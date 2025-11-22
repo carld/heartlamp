@@ -134,6 +134,56 @@ void bottomup(delay) {
 	    P0 = ps[3]; P2 = ps[0];
 		delay_ms(delay);
 	}
+
+	delay_ms(delay);
+	delay_ms(delay);
+	delay_ms(delay);
+}
+
+void cylon(delay) {
+	int step = 0;
+	int bit = 0;
+	int ps[4] = { 0xFF , 0xFF, 0xFF, 0xFF }; // clockwise
+    P0 = ps[3];
+    P1 = ps[2];
+    P2 = ps[0];
+    P3 = ps[1];
+	
+	for (step = 0; step < 8; step++) {
+		ps[1] = ~(0x01 << step);
+		ps[2] = ~(0x80 >> step);		
+	    P1 = ps[2];
+	    P3 = ps[1];
+		delay_ms(delay);
+	}
+	P1 = ps[2] = 0xFF;
+	P3 = ps[1] = 0xFF;
+	for (step = 0; step < 8; step ++) {
+		ps[0] = ~(0x01 << step);
+		ps[3] = ~(0x01 << step);
+	    P0 = ps[3]; P2 = ps[0];
+		delay_ms(delay);
+	}
+	P0 = ps[3] = 0xFF;
+	P2 = ps[0] = 0xFF;
+
+	for (step = 0; step < 8; step ++) {
+		ps[0] = ~(0x80 >> step);
+		ps[3] = ~(0x80 >> step);
+	    P0 = ps[3]; P2 = ps[0];
+		delay_ms(delay);
+	}
+	P0 = ps[3] = 0xFF;
+	P2 = ps[0] = 0xFF;
+	for (step = 0; step < 8; step++) {
+		ps[1] = ~(0x80 >> step);
+		ps[2] = ~(0x01 << step);		
+	    P1 = ps[2];
+	    P3 = ps[1];
+		delay_ms(delay);
+	}
+	P1 = ps[2] = 0xFF;
+	P3 = ps[1] = 0xFF;
 }
 
 void all_off(delay) {
@@ -155,6 +205,10 @@ void all_on(delay) {
 void main(void) {
 
     while(1) {
+		cylon(50);
+		cylon(50);
+		cylon(50);
+
 		lap_cw(50);
 		lap_cw(50);
 		lap_cw(50);
