@@ -1,0 +1,1 @@
+"sdcc"  -o"./bin/" "./src/heartleds.c"
