@@ -128,7 +128,7 @@ void lap_ccw(delay){
 }
 
 
-/* fill up from bottom */
+/* fill up from bottom, level riser like water filling a bucker */
 void fill(delay) {
 	int step = 0;
 	int bit = 0;
@@ -174,7 +174,7 @@ void fill(delay) {
 	}
 }
 
-/* light them all up starting at the bottom */
+/* light them all up on both sides starting at the bottom */
 void bottomup(delay) {
 	int step = 0;
 	int bit = 0;
@@ -201,7 +201,7 @@ void bottomup(delay) {
 	delay_ms(delay);
 }
 
-/* extinguish starting from the top */
+/* extinguish both sides starting from the top */
 void bottomdown(delay) {
 	int step = 0;
 	int bit = 0;
@@ -317,7 +317,7 @@ void main(void) {
 		bottomdown(100);
 		bottomup(100);
 		bottomdown(100);
-		all_off(500);
+		all_off(1000);
 		all_on(3000);
     }
 }
