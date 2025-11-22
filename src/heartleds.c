@@ -4,6 +4,31 @@ void Timer0_ISR(void) __interrupt(1) {
 	//   TF0 = 0; // reset  interrupt flag
 }
 
+void delay_10ms(void) {
+  TMOD &= 0xF0; // clear lower bits for timer
+  TMOD |= 0x01 ; // set timer0 in mode 1
+  TH0 = 0xD8; //initial value for 50 ms 
+  TL0 = 0xF0;
+  ET0 = 1 ; // enable timer0 interrupt
+  EA = 1 ; // enable interrupts
+  TR0 = 1; // timer0 start
+
+  PCON |= 0x01;  // Set IDL bit in PCON register
+
+  // MCU will idle until timer overflow interrupt
+
+/*
+  while (TF0 == 0) {
+	__asm
+		nop
+	__endasm;
+  } // check overflow condition
+*/
+
+  TR0 = 0; // Stop Timer
+  TF0 = 0; // Clear flag
+}
+
 void delay_50ms(void) {
   TMOD &= 0xF0; // clear lower bits for timer
   TMOD |= 0x01 ; // set timer0 in mode 1
@@ -32,8 +57,15 @@ void delay_50ms(void) {
 /* this is not a precise delay because of the operations involved in setting up the timer interrupt*/
 void delay_ms(t) {
 	int i;
-	for (i = 0; i < (t / 50); i++) {
-		delay_50ms();
+	if (t < 50) {
+		for (i = 0; i < (t / 10); i++) {
+			delay_10ms();
+		}
+		return;
+	} else {
+		for (i = 0; i < (t / 50); i++) {
+			delay_50ms();
+		}
 	}
 }
 
@@ -205,9 +237,9 @@ void all_on(delay) {
 void main(void) {
 
     while(1) {
-		cylon(50);
-		cylon(50);
-		cylon(50);
+		cylon(20);
+		cylon(20);
+		cylon(20);
 
 		lap_cw(50);
 		lap_cw(50);
