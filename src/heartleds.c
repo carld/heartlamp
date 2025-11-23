@@ -188,16 +188,26 @@ void fill(delay) {
 }
 
 /* light them all up on both sides starting at the bottom */
-void bottomup(delay) {
+void bottomup(int delay, unsigned char state) {
 	int step = 0;
-    all_off();
-
+    all(~state);
 	for (step = 0; step < 16; step++) {
-		set_led(15 - step, 0);
-		set_led(16 + step, 0);
+		set_led(15 - step, state);
+		set_led(16 + step, state);
 		delay_ms(delay);
 	}
+	delay_ms(delay);
+}
 
+/* extinguish both sides starting from the top */
+void topdown(int delay, unsigned char state) {
+	int step = 0;
+	all(~state);
+	for (step = 15; step >= 0; step--) {
+		set_led(15 - step, state);
+		set_led(16 + step, state);
+		delay_ms(delay);
+	}
 	delay_ms(delay);
 }
 
@@ -215,19 +225,6 @@ void middleout(delay, state) {
 	delay_ms(delay);
 }
 
-
-/* extinguish both sides starting from the top */
-void bottomdown(delay) {
-	int step = 0;
-	all_on();
-	for (step = 15; step >= 0; step--) {
-		set_led(15 - step, 1);
-		set_led(16 + step, 1);
-		delay_ms(delay);
-	}
-
-	delay_ms(delay);
-}
 
 void cylon(delay) {
 	int step = 0;
@@ -306,7 +303,7 @@ void rasterbar(delay){
 	delay_ms(delay);
 }
 
-void line(int delay, int length, int times) {
+void line_cw(int delay, int length, int times) {
 	unsigned char buffer[32] = { 0xff };
 	int step, x;
 
@@ -329,8 +326,20 @@ void line(int delay, int length, int times) {
 void main(void) {
 
     while(1) {
+		bottomup(100, 0x00);
+		topdown(100, 0xff);
+
+		bottomup(100, 0x00);
+		bottomup(100, 0xff);
+
+		topdown(100, 0x00);
+		topdown(100, 0xff);
+
+		topdown(100, 0x00);
+		bottomup(100, 0xff);
+
 		//rasterbar(20);
-		line(20, 16, 10);
+		line_cw(20, 16, 10);
 		middleout(50, 0x00);
 		middleout(50, 0xff);
 		middleout(50, 0x00);
@@ -352,12 +361,7 @@ void main(void) {
 		lap_cw(20);
 		lap_ccw(20);
 		lap_ccw(20);
-		bottomup(100);
-		bottomdown(100);
-		bottomup(100);
-		bottomdown(100);
-		bottomup(100);
-		bottomdown(100);
+
 		all_off();
 		all_on();
 		delay_ms(2000);
