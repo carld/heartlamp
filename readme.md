@@ -11,7 +11,8 @@ Steps
     - avrdudess, a GUI for operating avrdude
 1. Purchase
     - the lamp kit
-    - at least one additional AT89S51 microcontroller, as the "S" model can be programmed in ciruit
+    - at least one AT89S51 microcontroller, as the "S" model can be programmed in ciruit.
+      The "C" model that the kit comes with requires high voltage (12v) parallel programming and can't be programmed in circuit.
     - two USBasp programmer devices (two because you need one of these to program the other with the firware in tools\USBasp)
     - at least one 10 pin IDC female connector
     - additional wires at least seven, dupont or similar
@@ -36,7 +37,7 @@ Steps
 7. Connect the updated USBasp programmer to the IDC connector using the ribbon cable that came with the programmer, and a PC USB port
 8. Build src/heartleds.c
     - see the build.bat file
-9. Run AVRDUDESS or use avedude on the commandline to update the AT89S51 with the built code in bin/heartleds.hex
+9. Run AVRDUDESS or avrdude on the commandline to update the AT89S51 with the built code in bin/heartleds.hex
     - see the install.bat file
     - the customised tools/avrdude/avrdude.conf file has a section for the AT89S51
 
