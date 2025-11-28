@@ -32,3 +32,9 @@ Steps
 9. Run AVRDUDESS or use avedude on the commandline to update the AT89S51 with the built code in bin/heartleds.hex
     - see the install.bat file
 
+![alt text](docs/IMG_4044.jpeg)
+![alt text](docs/IMG_4045.jpeg)
+![alt text](docs/IMG_4046.jpeg)
+![alt text](docs/IMG_4047.jpeg)
+![alt text](docs/IMG_4048.jpeg)
+![alt text](docs/IMG_4049.jpeg)

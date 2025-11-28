@@ -7,7 +7,7 @@ void Timer0_ISR(void) __interrupt(1) {
 void delay_10ms(void) {
   TMOD &= 0xF0; // clear lower bits for timer
   TMOD |= 0x01 ; // set timer0 in mode 1
-  TH0 = 0xD8; //initial value for 10 ms 
+  TH0 = 0xD8; //initial value for 10 ms : 65535 - 10000 = 55535 = 0xD8F0
   TL0 = 0xF0;
   ET0 = 1 ; // enable timer0 interrupt
   EA = 1 ; // enable interrupts
@@ -32,7 +32,7 @@ void delay_10ms(void) {
 void delay_50ms(void) {
   TMOD &= 0xF0; // clear lower bits for timer
   TMOD |= 0x01 ; // set timer0 in mode 1
-  TH0 = 0x3C; //initial value for 50 ms 
+  TH0 = 0x3C; //initial value for 50 ms : 65535 - 50000 = 15535 = 0x3CB0
   TL0 = 0xB0;
   ET0 = 1 ; // enable timer0 interrupt
   EA = 1 ; // enable interrupts
@@ -68,20 +68,6 @@ void delay_ms(t) {
 			delay_50ms();
 		}
 	}
-}
-
-void all_off(void) {
-	P0 = 0xFF;
-	P1 = 0xFF;
-	P2 = 0xFF;
-	P3 = 0xFF;
-}
-
-void all_on(void) {
-	P0 = 0x00;
-	P1 = 0x00;
-	P2 = 0x00;
-	P3 = 0x00;
 }
 
 void all(state) {
@@ -157,7 +143,7 @@ void set_led_pair(unsigned char index, unsigned char value) {
 /* clockwise lap */
 void lap_cw(delay) {
 	int i;
-	all_off();
+	all(0xff);
 	for (i = 0; i < 32; i++) {
 		set_led(i, 0);
 		delay_ms(delay);
@@ -168,7 +154,7 @@ void lap_cw(delay) {
 /* counter clockwise lap */
 void lap_ccw(delay) {
 	int i;
-    all_off();
+    all(0xff);
 	for (i = 31; i >= 0; i--) {
 		set_led(i, 0);
 		delay_ms(delay);
@@ -179,7 +165,7 @@ void lap_ccw(delay) {
 /* fill up from bottom, level riser like water filling a bucker */
 void fill(delay) {
 	int step = 0;
-    all_off();
+    all(0xff);
 	
 	for (step = 0; step < 13; step++) {
 		set_led_pair(step, 0);
@@ -228,7 +214,7 @@ void middleout(delay, state) {
 
 void cylon(delay) {
 	int step = 0;
-    all_off();
+    all(0xff);
 	for (step = 0; step < 16; step++) {
 		set_led(15 - step, 0);
 		set_led(16 + step, 0);
@@ -289,7 +275,7 @@ const unsigned char sine_table[360] = {
 void rasterbar(delay){
 	int x;
 
-   all_off();
+   all(0xff);
 	
 	for (x = 0; x < 360; x+=10) {
 		set_led_pair(sine_table[x]-1, 0);
@@ -326,6 +312,8 @@ void line_cw(int delay, int length, int times) {
 void main(void) {
 
     while(1) {
+		line_cw(20, 31, 10);
+
 		bottomup(100, 0x00);
 		topdown(100, 0xff);
 
@@ -362,10 +350,10 @@ void main(void) {
 		lap_ccw(20);
 		lap_ccw(20);
 
-		all_off();
-		all_on();
+		all(0xff);
+		all(0x00);
 		delay_ms(2000);
-		all_off();
+		all(0xff);
 		delay_ms(20);
 
     }
