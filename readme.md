@@ -27,7 +27,7 @@ Steps
     - GND   (ground) is pin 20, but solder this to the ground of the battery voltage booster module.
 6. Update the firmware on a USBasp, by using AVRDUDESS or avrdude and the firmware in tools/USBasp
     - this firmware has been modified to support the AT89S51 as this MCU needs the reset line held high,
-       the opposite to other MCUs
+       the opposite to other MCUs. The firmware came from https://github.com/dioannidis/usbasp
     - the USBasp typically has an ATMega8a or similar
     - the command line will look like
     ```
